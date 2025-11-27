@@ -1,0 +1,4 @@
+[daily-remote]
+type = b2
+account = ${PHX_DAILY_BACKUP_B2_ACCOUNT}
+key = ${PHX_DAILY_BACKUP_B2_KEY}

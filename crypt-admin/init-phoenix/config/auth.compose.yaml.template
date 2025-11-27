@@ -1,0 +1,14 @@
+# ~https://www.authelia.com/integration/deployment/docker/#standalone-example
+# Enable templates: https://www.authelia.com/configuration/methods/files/#file-filters
+
+services:
+  authelia:
+    container_name: auth-authelia
+    image: authelia/authelia:${PHX_AUTH_AUTHELIA_IMAGE}
+    environment:
+      X_AUTHELIA_CONFIG_FILTERS: template
+    volumes:
+      - /home/ubuntu/crypt/program-files/auth/authelia/config:/config
+    ports:
+      - 127.0.0.1:${PHX_AUTH_HTTP_PORT}:${PHX_AUTH_HTTP_CONTAINER_PORT}
+    restart: always

@@ -1,0 +1,16 @@
+set -e
+
+sudo echo root crypt: # ...to trigger auth *before* message
+sudo gocryptfs -allow_other /root/crypt-data /root/crypt
+sleep .5
+
+echo docker volume crypt:
+sudo gocryptfs -allow_other /root/docker-vol-crypt-data /root/docker-vol-crypt
+sleep .5
+
+echo admin crypt:
+gocryptfs -allow_other /home/ubuntu/crypt-data /home/ubuntu/crypt
+sleep .5
+
+echo mysql crypt:
+sudo -u mysql gocryptfs -force_owner ${PHX_MYSQL_UID}:${PHX_MYSQL_GID} -allow_other /mysql/crypt-data /mysql/crypt

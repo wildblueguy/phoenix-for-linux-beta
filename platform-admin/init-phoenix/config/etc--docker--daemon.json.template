@@ -1,0 +1,14 @@
+{
+  "data-root": "/root/crypt/docker",
+  "dns": ["${PHX_DOCKER_DNS_1}", "${PHX_DOCKER_DNS_2}", "${PHX_DOCKER_DNS_3}"],
+  "default-address-pools": [{
+    "base": "172.17.0.0/16",
+    "size": 24
+  }],
+  "bip": "172.17.0.1/24",
+  "log-driver": "local",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "10"
+  }
+}

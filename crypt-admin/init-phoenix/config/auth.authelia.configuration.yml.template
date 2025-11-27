@@ -1,0 +1,81 @@
+# https://www.authelia.com/configuration/prologue/introduction
+# https://github.com/authelia/authelia/blob/master/config.template.yml
+# LDAP: https://github.com/lldap/lldap/blob/main/example_configs/authelia_config.yml / https://www.authelia.com/integration/ldap/lldap
+# OIDC: https://www.authelia.com/configuration/identity-providers/openid-connect/provider
+# OIDC JWKS private key: https://www.authelia.com/configuration/identity-providers/openid-connect/provider/#key
+# OIDC clients: https://www.authelia.com/configuration/identity-providers/openid-connect/clients
+# HedgeDoc OIDC: https://www.authelia.com/integration/openid-connect/hedge-doc#authelia
+# Grist OIDC: https://github.com/gristlabs/grist-core/blob/main/docker-compose-examples/grist-traefik-oidc-auth/configs/authelia/configuration.yml
+
+authentication_backend:
+  password_reset:
+    disable: ${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE}
+  refresh_interval: '1m'
+  ldap:
+    implementation: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_IMPLEMENTATION}'
+    address: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PROTOCOL}://${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_HOST}:${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PORT}'
+    base_dn: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}'
+    user: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER}'
+    password: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD}'
+    users_filter: '${PHX_AUTH_AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER}'
+totp:
+  issuer: '${PHX_AUTH_AUTHELIA_TOTP_ISSUER}'
+webauthn:
+  display_name: '${PHX_AUTH_AUTHELIA_WEB_AUTHN_DISPLAY_NAME}'
+access_control:
+  default_policy: 'two_factor'
+password_policy:
+  standard:
+    enabled: true
+    min_length: 8
+identity_validation:
+  reset_password:
+    jwt_secret: '${PHX_AUTH_AUTHELIA_IDENTITY_VALIDATION_PASSWORD_RESET_JWT_SECRET}'
+session:
+  cookies:
+    - domain: '${PHX_AUTH_DOMAIN}'
+      authelia_url: 'https://${PHX_AUTH_DOMAIN}'
+storage:
+  encryption_key: '${PHX_AUTH_AUTHELIA_STORAGE_ENCRYPTION_KEY}'
+  mysql:
+    address: 'tcp://172.17.0.1:3306'
+    database: 'auth'
+    username: 'auth-authelia'
+    password: '${PHX_AUTH_AUTHELIA_DB_PASSWORD}'
+notifier:
+  smtp:
+    address: '${PHX_AUTH_AUTHELIA_NOTIFIER_SMTP_ADDRESS}'
+    username: '${PHX_AUTH_AUTHELIA_NOTIFIER_SMTP_USERNAME}'
+    password: '${PHX_AUTH_AUTHELIA_NOTIFIER_SMTP_PASSWORD}'
+    sender: '${PHX_AUTH_AUTHELIA_NOTIFIER_SMTP_SENDER}'
+identity_providers:
+  oidc:
+    hmac_secret: '${PHX_AUTH_AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET}'
+    jwks:
+      - algorithm: 'RS256'
+        use: 'sig'
+        key: {{ secret "/config/oidc-jwks.private.pem" | mindent 10 "|" | msquote }}
+    clients:
+      - client_id: '${PHX_DOCS_OIDC_CLIENT_ID}'
+        client_name: '${PHX_AUTH_AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_DOCS_CLIENT_NAME}'
+        client_secret: '${PHX_AUTH_AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_CLIENT_SECRET_DOCS}'
+        redirect_uris:
+          - 'https://${PHX_DOCS_DOMAIN}/auth/oauth2/callback'
+        scopes:
+          - 'openid'
+          - 'email'
+          - 'groups'
+          - 'profile'
+        authorization_policy: 'two_factor'
+        token_endpoint_auth_method: 'client_secret_post'
+      - client_id: '${PHX_SHEETS_OIDC_CLIENT_ID}'
+        client_name: '${PHX_AUTH_AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_SHEETS_CLIENT_NAME}'
+        client_secret: '${PHX_AUTH_AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_CLIENT_SECRET_SHEETS}'
+        redirect_uris:
+          - 'https://${PHX_SHEETS_DOMAIN}/oauth2/callback'
+        scopes:
+          - 'openid'
+          - 'email'
+          # - 'groups' # Group support too sophisticated / not sophisticated enough
+          - 'profile'
+        authorization_policy: 'two_factor'

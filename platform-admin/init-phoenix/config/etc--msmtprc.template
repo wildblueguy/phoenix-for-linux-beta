@@ -1,0 +1,18 @@
+defaults
+tls ${PHX_MSMTP_TLS}
+host ${PHX_MSMTP_HOST}
+port ${PHX_MSMTP_PORT}
+auth ${PHX_MSMTP_AUTH}
+user ${PHX_MSMTP_USER}
+password ${PHX_MSMTP_PASSWORD}
+from ${PHX_MSMTP_FROM}
+
+account platform
+set_from_header on
+logfile /home/ubuntu/platform-admin/.msmtp.log
+
+account crypt
+set_from_header auto
+logfile /home/ubuntu/crypt/crypt-admin/.msmtp.log
+
+account default : platform

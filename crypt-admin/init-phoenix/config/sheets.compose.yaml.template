@@ -1,0 +1,30 @@
+# https://github.com/gristlabs/grist-core/blob/main/docker-compose-examples/grist-traefik-oidc-auth/docker-compose.yml
+# OSS image: https://github.com/gristlabs/grist-core?tab=readme-ov-file#available-docker-images
+# Config: https://github.com/gristlabs/grist-core/blob/main/README.md#environment-variables
+
+services:
+  grist:
+    container_name: sheets-grist
+    image: gristlabs/grist-oss:${PHX_SHEETS_GRIST_IMAGE}
+    environment:
+      GRIST_OIDC_IDP_ISSUER: ${PHX_SHEETS_GRIST_OIDC_IDP_ISSUER}
+      GRIST_OIDC_IDP_CLIENT_ID: ${PHX_SHEETS_GRIST_OIDC_IDP_CLIENT_ID}
+      GRIST_OIDC_IDP_CLIENT_SECRET: ${PHX_SHEETS_GRIST_OIDC_IDP_CLIENT_SECRET}
+      GRIST_OIDC_IDP_END_SESSION_ENDPOINT: ${PHX_SHEETS_GRIST_OIDC_IDP_END_SESSION_ENDPOINT}
+      GRIST_ORG_IN_PATH: true
+      GRIST_FORCE_LOGIN: false
+      GRIST_ANON_PLAYGROUND: false
+      APP_HOME_URL: https://${PHX_SHEETS_DOMAIN}
+      GRIST_DEFAULT_EMAIL: ${PHX_APP_SUPER_USER_EMAIL}
+    volumes:
+      - persist:/persist
+    ports:
+      - 127.0.0.1:${PHX_SHEETS_HTTP_PORT}:${PHX_SHEETS_HTTP_CONTAINER_PORT}
+    restart: always
+volumes:
+  persist:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/sheets_persist
+      o: bind

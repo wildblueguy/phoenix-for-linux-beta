@@ -1,0 +1,14 @@
+# https://github.com/lldap/lldap?tab=readme-ov-file#with-docker
+
+services:
+  lldap:
+    container_name: ldap-lldap
+    image: lldap/lldap:${PHX_LDAP_LLDAP_IMAGE}
+    volumes:
+      - /home/ubuntu/crypt/program-files/ldap/lldap/data:/data
+    ports:
+      - 127.0.0.1:${PHX_LDAP_LDAP_PORT}:${PHX_LDAP_LDAP_CONTAINER_PORT}
+      - 172.17.0.1:${PHX_LDAP_LDAP_PORT}:${PHX_LDAP_LDAP_CONTAINER_PORT}
+      - 127.0.0.1:${PHX_LDAP_LDAPS_PORT}:${PHX_LDAP_LDAPS_CONTAINER_PORT}
+      - 127.0.0.1:${PHX_LDAP_HTTP_PORT}:${PHX_LDAP_HTTP_CONTAINER_PORT}
+    restart: always

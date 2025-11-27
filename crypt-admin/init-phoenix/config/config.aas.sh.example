@@ -1,0 +1,15 @@
+PHX_AUTHELIA_CLI_PACKAGE_URL=https://github.com/authelia/authelia/releases/download/v4.39.4/authelia-v4.39.4-linux-amd64.tar.gz
+PHX_RCLONE_PACKAGE_URL=https://github.com/rclone/rclone/releases/download/v1.69.3/rclone-v1.69.3-linux-amd64.zip
+PHX_RCLONE_PACKAGE_INNER=rclone-v1.69.3-linux-amd64
+PHX_LEGO_PACKAGE_URL=https://github.com/go-acme/lego/releases/download/v4.23.1/lego_v4.23.1_linux_amd64.tar.gz
+
+PHX_INSTANCE_ID=0 # TODO: Change if backing up multiple instances to the same B2 bucket
+PHX_ADMIN_EMAIL=admin@your.domain # TODO
+
+PHX_DAILY_SERVICE_TIME=00:00:00 # TODO
+PHX_DAILY_SERVICE_TIME_ZONE=Etc/UTC # TODO
+PHX_DAILY_BACKUP_B2_ACCOUNT=0000000000000000000000000 # TODO
+PHX_DAILY_BACKUP_B2_KEY=0000000000000000000000000000000 # TODO
+PHX_DAILY_BACKUP_B2_BUCKET=your-bucket # TODO
+PHX_DAILY_CERT_RENEWAL_ENABLED=true
+PHX_DAILY_CERT_RENEWAL_LE_ACCOUNT=admin@your.domain # TODO

@@ -1,0 +1,5 @@
+PHX_DOCKER_DNS_1=76.76.2.11 # Control D: p1.freedns.controld.com (malware-blocking)
+PHX_DOCKER_DNS_2=9.9.9.9 # Quad 9: dns.quad9.net (malware-blocking)
+PHX_DOCKER_DNS_3=1.1.1.2 # Cloudflare: security.cloudflare-dns.com (malware-blocking)
+
+PHX_PROTECT_CRYPTS_WITH_FS_ENCRYPTION=true # Disabling exposes admin/user data locally (if no FDE) and to Backblaze

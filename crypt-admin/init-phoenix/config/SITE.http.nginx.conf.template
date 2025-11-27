@@ -1,0 +1,28 @@
+# https://docs.hedgedoc.org/guides/reverse-proxy#nginx
+
+server {
+  listen [::]:80 http2;
+  listen 80 http2;
+  server_name ${PHX_NGINX_HTTP_SITE_TEMPLATE_SERVER_NAME};
+  return 301 https://${PHX_NGINX_HTTP_SITE_TEMPLATE_SERVER_NAME}$request_uri;
+}
+
+server {
+  listen [::]:443 http2 ssl;
+  listen 443 http2 ssl;
+  server_name ${PHX_NGINX_HTTP_SITE_TEMPLATE_SERVER_NAME};
+  ssl_certificate /home/ubuntu/crypt/lego/certificates/${PHX_NGINX_HTTP_SITE_TEMPLATE_SERVER_NAME}.crt;
+  ssl_certificate_key /home/ubuntu/crypt/lego/certificates/${PHX_NGINX_HTTP_SITE_TEMPLATE_SERVER_NAME}.key;
+  client_max_body_size 10m;
+  location / {
+    proxy_pass ${PHX_NGINX_HTTP_SITE_TEMPLATE_PROXY_PASS};
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    # Client identification
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP $remote_addr;
+    # WebSocket support
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+  }
+}

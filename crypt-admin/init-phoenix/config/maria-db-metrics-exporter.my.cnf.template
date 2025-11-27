@@ -1,0 +1,5 @@
+[client]
+host=127.0.0.1
+port=3306
+user=metrics-exporter
+password=${PHX_MARIA_DB_METRICS_EXPORTER_DB_PASSWORD}

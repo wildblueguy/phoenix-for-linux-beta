@@ -1,0 +1,2 @@
+[Service]
+ExecStart=bash /root/crypt/program-files/daily-service/daily-service.sh

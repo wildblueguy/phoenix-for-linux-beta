@@ -1,0 +1,13 @@
+PHX_MSMTP_TLS=on # TODO
+PHX_MSMTP_HOST=smtp.some.domain # TODO
+PHX_MSMTP_PORT=587 # TODO
+PHX_MSMTP_AUTH=on # TODO
+PHX_MSMTP_USER=mail-relay@your.domain # TODO
+PHX_MSMTP_PASSWORD=XXXXXXXX # TODO
+PHX_MSMTP_FROM=mail-relay@your.domain # TODO
+
+PHX_MANAGE_SWAP=true
+PHX_SWAP_FILE_GEN_DD_BLOCK_SIZE=1024 # 1 KiB
+PHX_SWAP_FILE_GEN_DD_BLOCK_COUNT=2097152 # 2 GiB, if 1 KiB block size
+
+PHX_PRIVATE_NIC_ADDRESS=127.0.0.1 # Can change to other trusted network, e.g. Tailscale

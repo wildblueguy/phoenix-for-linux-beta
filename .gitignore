@@ -1,0 +1,13 @@
+platform-admin/secure-sudo-dns/config/etc--netplan--PRIMARY.yaml
+platform-admin/secure-sudo-dns/config/etc--sudoers.d--99-overrides
+platform-admin/secure-sudo-dns/config/etc--systemd--resolved.conf
+platform-admin/init-phoenix/config/config.sh
+platform-admin/init-phoenix/config/config.aas.sh
+platform-admin/init-phoenix/state/state.sh
+platform-admin/init-phoenix/state/platform-ports.sh-array
+platform-admin/init-phoenix/state/state.aas.sh
+crypt-admin/init-phoenix/config/config.sh
+crypt-admin/init-phoenix/config/config.aas.sh
+crypt-admin/init-phoenix/state/state.sh
+crypt-admin/init-phoenix/state/crypt-ports.sh-array
+crypt-admin/init-phoenix/state/state.aas.sh

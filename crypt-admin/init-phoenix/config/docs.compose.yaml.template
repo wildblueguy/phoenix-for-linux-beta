@@ -1,0 +1,64 @@
+# https://docs.hedgedoc.org/setup/docker
+# Config: https://docs.hedgedoc.org/configuration
+# Reverse proxy compat: https://docs.hedgedoc.org/guides/reverse-proxy#hedgedoc-config
+# OIDC auth: https://www.authelia.com/integration/openid-connect/hedge-doc#application
+# Image compressor: https://github.com/tiny-media/hedgedoc-image-compressor?tab=readme-ov-file#installation
+# Image compressor config: https://github.com/tiny-media/hedgedoc-image-compressor?tab=readme-ov-file#installation
+
+services:
+  hedgedoc:
+    container_name: docs-hedgedoc
+    image: quay.io/hedgedoc/hedgedoc:${PHX_DOCS_HEDGEDOC_IMAGE}
+    environment:
+      NODE_ENV: production
+      DEBUG: false
+      CMD_DB_URL: mysql://docs-hedgedoc:${PHX_DOCS_HEDGEDOC_DB_PASSWORD}@172.17.0.1:3306/docs
+      CMD_LOGLEVEL: info
+      CMD_ENABLE_STATS_API: false
+      CMD_DOMAIN: ${PHX_DOCS_DOMAIN}
+      CMD_PROTOCOL_USESSL: true
+      CMD_ALLOW_ANONYMOUS: false
+      CMD_DEFAULT_PERMISSION: limited
+      CMD_SESSION_SECRET: ${PHX_DOCS_HEDGEDOC_SESSION_SECRET}
+      CMD_EMAIL: false
+      CMD_OAUTH2_PROVIDERNAME: ${PHX_DOCS_HEDGEDOC_OAUTH2_PROVIDERNAME}
+      CMD_OAUTH2_AUTHORIZATION_URL: ${PHX_DOCS_HEDGEDOC_OAUTH2_AUTHORIZATION_URL}
+      CMD_OAUTH2_TOKEN_URL: ${PHX_DOCS_HEDGEDOC_OAUTH2_TOKEN_URL}
+      CMD_OAUTH2_USER_PROFILE_URL: ${PHX_DOCS_HEDGEDOC_OAUTH2_USER_PROFILE_URL}
+      CMD_OAUTH2_CLIENT_ID: ${PHX_DOCS_HEDGEDOC_OAUTH2_CLIENT_ID}
+      CMD_OAUTH2_CLIENT_SECRET: ${PHX_DOCS_HEDGEDOC_OAUTH2_CLIENT_SECRET}
+      CMD_OAUTH2_SCOPE: ${PHX_DOCS_HEDGEDOC_OAUTH2_SCOPE}
+      CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR: ${PHX_DOCS_HEDGEDOC_OAUTH2_USER_PROFILE_USERNAME_ATTR}
+      CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR: ${PHX_DOCS_HEDGEDOC_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR}
+      CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR: ${PHX_DOCS_HEDGEDOC_OAUTH2_USER_PROFILE_EMAIL_ATTR}
+      CMD_OAUTH2_ROLES_CLAIM: ${PHX_DOCS_HEDGEDOC_OAUTH2_ROLES_CLAIM}
+      CMD_OAUTH2_ACCESS_ROLE: ${PHX_DOCS_HEDGEDOC_OAUTH2_ACCESS_ROLE}
+    volumes:
+      - uploads:/hedgedoc/public/uploads
+    ports:
+      - 127.0.0.1:${PHX_DOCS_HTTP_PORT}:${PHX_DOCS_HTTP_CONTAINER_PORT}
+    restart: always
+  image-compressor:
+    container_name: docs-image-compressor
+    image: ghcr.io/tiny-media/hedgedoc-image-compressor:${PHX_DOCS_IMAGE_COMPRESSOR_IMAGE}
+    environment:
+      OUTPUT_FORMAT: avif
+      REDUCTION_THRESHOLD: 0
+      WEBP_QUALITY: 70
+      AVIF_QUALITY: 60
+      JPEG_QUALITY: 65
+      MAX_DIMENSION: 1500 # ~1080p number of pixels
+      WATCH_DIR: /hedgedoc/public/uploads
+      PARALLEL_PROCESSES: 1
+      CPU_COUNT: 1
+      DEBUG: false
+    volumes:
+      - uploads:/hedgedoc/public/uploads
+    restart: always
+volumes:
+  uploads:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/docs_uploads
+      o: bind

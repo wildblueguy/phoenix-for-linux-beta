@@ -1,0 +1,6 @@
+[Timer]
+OnCalendar=Sun,Mon,Tue,Wed,Thu,Fri,Sat *-*-* ${PHX_DAILY_SERVICE_TIME} ${PHX_DAILY_SERVICE_TIME_ZONE}
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+# https://github.com/lldap/lldap/blob/main/lldap_config.docker_template.toml
+
+verbose = false
+ldap_host = "0.0.0.0"
+ldap_port = 3890
+http_host = "0.0.0.0"
+http_port = 17170
+http_url = "https://${PHX_LDAP_DOMAIN}"
+jwt_secret = "${PHX_LDAP_LLDAP_JWT_SECRET}"
+ldap_base_dn = "${PHX_LDAP_LLDAP_BASE_DN}"
+ldap_user_dn = "${PHX_LDAP_LLDAP_USER_DN}"
+ldap_user_email = "${PHX_LDAP_LLDAP_USER_EMAIL}"
+ldap_user_pass = "${PHX_LDAP_LLDAP_USER_PASS}"
+force_ldap_user_pass_reset = "always"
+database_url = "mysql://ldap-lldap:${PHX_LDAP_LLDAP_DB_PASSWORD}@172.17.0.1:3306/ldap"
+key_file = ""
+key_seed = "${PHX_LDAP_LLDAP_KEY_SEED}"
+
+[smtp_options]
+enable_password_reset = ${PHX_LDAP_LLDAP_SMTP_OPTIONS_ENABLE_PASSWORD_RESET}
+server = "${PHX_LDAP_LLDAP_SMTP_OPTIONS_SERVER}"
+port = ${PHX_LDAP_LLDAP_SMTP_OPTIONS_PORT}
+smtp_encryption = "${PHX_LDAP_LLDAP_SMTP_OPTIONS_SMTP_ENCRYPTION}"
+user = "${PHX_LDAP_LLDAP_SMTP_OPTIONS_USER}"
+password = "${PHX_LDAP_LLDAP_SMTP_OPTIONS_PASSWORD}"
+from = "${PHX_LDAP_LLDAP_SMTP_OPTIONS_FROM}"
+reply_to = "${PHX_LDAP_LLDAP_SMTP_REPLY_TO}"
+
+[ldaps_options]
+enabled = true
+port = 6360
+cert_file = "/data/${PHX_LDAP_DOMAIN}.crt"
+key_file = "/data/${PHX_LDAP_DOMAIN}.key"

@@ -1,0 +1,6 @@
+server {
+  listen 127.0.0.1:${PHX_NGINX_STATUS_PORT};
+  location /nginx-status {
+    stub_status;
+  }
+}

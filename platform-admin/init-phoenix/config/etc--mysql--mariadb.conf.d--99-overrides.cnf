@@ -1,0 +1,6 @@
+[mysqld]
+datadir=/mysql/crypt/maria-db
+bind-address=127.0.0.1,172.17.0.1
+
+[client-server]
+port=3306

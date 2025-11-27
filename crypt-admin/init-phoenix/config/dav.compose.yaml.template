@@ -1,0 +1,75 @@
+# https://github.com/nextcloud/docker?tab=readme-ov-file#base-version---apache
+# Config: https://github.com/nextcloud/docker?tab=readme-ov-file#auto-configuration-via-environment-variables
+
+services:
+  nextcloud:
+    container_name: dav-nextcloud
+    image: nextcloud:${PHX_DAV_NEXTCLOUD_IMAGE}
+    environment:
+      MYSQL_DATABASE: dav
+      MYSQL_USER: dav-nextcloud
+      MYSQL_PASSWORD: ${PHX_DAV_NEXTCLOUD_DB_PASSWORD}
+      MYSQL_HOST: 172.17.0.1
+      NEXTCLOUD_ADMIN_USER: dav-admin
+      NEXTCLOUD_ADMIN_PASSWORD: ${PHX_DAV_NEXTCLOUD_ADMIN_PASSWORD}
+      NEXTCLOUD_TRUSTED_DOMAINS: ${PHX_DAV_DOMAIN}
+      # NEXTCLOUD_UPDATE: 1 # Uncomment if non-standard image (command other than `apache-foreground` or `php-fpm`)
+      # NEXTCLOUD_INIT_HTACCESS: true # Uncomment if non-standard image
+      # REDIS_HOST:
+      # REDIS_HOST_PORT: 6379
+      # REDIS_HOST_USER:
+      # REDIS_HOST_PASSWORD:
+      SMTP_HOST: ${PHX_DAV_NEXTCLOUD_SMTP_HOST}
+      SMTP_SECURE: ${PHX_DAV_NEXTCLOUD_SMTP_SECURE}
+      SMTP_PORT: ${PHX_DAV_NEXTCLOUD_SMTP_PORT}
+      SMTP_AUTHTYPE: ${PHX_DAV_NEXTCLOUD_SMTP_AUTHTYPE}
+      SMTP_NAME: ${PHX_DAV_NEXTCLOUD_SMTP_NAME}
+      SMTP_PASSWORD: ${PHX_DAV_NEXTCLOUD_SMTP_PASSWORD}
+      MAIL_FROM_ADDRESS: ${PHX_DAV_NEXTCLOUD_MAIL_FROM_ADDRESS}
+      MAIL_DOMAIN: ${PHX_DAV_NEXTCLOUD_MAIL_DOMAIN}
+      PHP_MEMORY_LIMIT: 512M # Default 512, tried 100 (causes update issues)
+      PHP_UPLOAD_LIMIT: 50M # Default 512
+      PHP_OPCACHE_MEMORY_CONSUMPTION: 50M # Default 128
+      APACHE_BODY_LIMIT: 52428800 # 50 MiB, ignored by FPM image
+      APACHE_DISABLE_REWRITE_IP: 1 # Ignored by FPM image
+      TRUSTED_PROXIES: 172.17.0.0/16
+    volumes:
+      - html:/var/www/html
+      - custom_apps:/var/www/html/custom_apps
+      - config:/var/www/html/config
+      - data:/var/www/html/data
+      - custom_theme:/var/www/html/themes/custom_theme
+    ports:
+      - 127.0.0.1:${PHX_DAV_HTTP_PORT}:${PHX_DAV_HTTP_CONTAINER_PORT} # Not used by FPM image (self-exposes 127.0.0.1:9000?)
+    restart: always
+volumes:
+  html:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/dav_html
+      o: bind
+  custom_apps:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/dav_custom_apps
+      o: bind
+  config:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/dav_config
+      o: bind
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/dav_data
+      o: bind
+  custom_theme:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/docker-vol-crypt/dav_custom_theme
+      o: bind

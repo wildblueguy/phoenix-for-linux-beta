@@ -1,0 +1,43 @@
+CREATE DATABASE ldap;
+CREATE DATABASE auth;
+CREATE DATABASE secrets;
+CREATE DATABASE docs;
+CREATE DATABASE dav;
+
+-- Based on output of:
+--   - `select host, user, password, plugin, authentication_string from mysql.user;`
+--   - `show grants for 'mariadb.sys'@'localhost';`
+--   - `show grants for 'root'@'localhost';`
+--   - `show grants for 'mysql'@'localhost';`
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${PHX_MARIA_DB_ROOT_DB_PASSWORD}';
+ALTER USER 'mysql'@'localhost' IDENTIFIED BY '${PHX_MARIA_DB_MYSQL_DB_PASSWORD}';
+-- 'root' and 'mysql' have all privileges and are authenticated by unknown
+-- passwords and access to the database's Unix socket, which is mirrored by the
+-- socket's permissions for the host users of the same name. Since we do NOT
+-- consider host privileges equivalent to crypt privileges, which includes
+-- privileges for this database, these authentication methods MUST be changed.
+-- This also results in TCP/IP being the only supported connection type for this
+-- database.
+
+CREATE USER 'metrics-exporter'@'127.0.0.1' IDENTIFIED BY '${PHX_MARIA_DB_METRICS_EXPORTER_DB_PASSWORD}';
+
+CREATE USER 'ldap-lldap'@ IDENTIFIED BY '${PHX_LDAP_LLDAP_DB_PASSWORD}';
+CREATE USER 'auth-authelia'@ IDENTIFIED BY '${PHX_AUTH_AUTHELIA_DB_PASSWORD}';
+CREATE USER 'secrets-vaultwarden'@ IDENTIFIED BY '${PHX_SECRETS_VAULTWARDEN_DB_PASSWORD}';
+CREATE USER 'docs-hedgedoc'@ IDENTIFIED BY '${PHX_DOCS_HEDGEDOC_DB_PASSWORD}';
+CREATE USER 'dav-nextcloud'@ IDENTIFIED BY '${PHX_DAV_NEXTCLOUD_DB_PASSWORD}';
+
+-- Privileges based on output of `cat /etc/default/prometheus-mysqld-exporter` (host)
+-- Databases based on output of `show databases;`
+GRANT SELECT ON mysql.* TO 'metrics-exporter'@'127.0.0.1';
+GRANT SELECT ON performance_schema.* TO 'metrics-exporter'@'127.0.0.1';
+GRANT SELECT ON sys.* TO 'metrics-exporter'@'127.0.0.1';
+GRANT PROCESS, BINLOG MONITOR ON *.* TO 'metrics-exporter'@'127.0.0.1';
+
+GRANT ALL PRIVILEGES ON ldap.* TO 'ldap-lldap';
+GRANT ALL PRIVILEGES ON auth.* TO 'auth-authelia';
+GRANT ALL PRIVILEGES ON secrets.* TO 'secrets-vaultwarden';
+GRANT ALL PRIVILEGES ON docs.* TO 'docs-hedgedoc';
+GRANT ALL PRIVILEGES ON dav.* TO 'dav-nextcloud';
+
+FLUSH PRIVILEGES;
