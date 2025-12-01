@@ -8,7 +8,7 @@ services:
       - /home/ubuntu/crypt/program-files/ldap/lldap/data:/data
     ports:
       - 127.0.0.1:${PHX_LDAP_LDAP_PORT}:${PHX_LDAP_LDAP_CONTAINER_PORT}
-      - 172.17.0.1:${PHX_LDAP_LDAP_PORT}:${PHX_LDAP_LDAP_CONTAINER_PORT}
+      - 127.0.0.1:${PHX_LDAP_LDAP_PORT}:${PHX_LDAP_LDAP_CONTAINER_PORT}
       - 127.0.0.1:${PHX_LDAP_LDAPS_PORT}:${PHX_LDAP_LDAPS_CONTAINER_PORT}
       - 127.0.0.1:${PHX_LDAP_HTTP_PORT}:${PHX_LDAP_HTTP_CONTAINER_PORT}
     restart: always

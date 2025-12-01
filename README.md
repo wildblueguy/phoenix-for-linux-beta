@@ -9,6 +9,7 @@
 
 - Working early implementation of [Wild Blue](https://thewild.blue)'s *Phoenix* architecture, for standalone Linux hosts
 - Phoenix is simple: Divide a computing environment into a variable-trust 'platform', where programs run, and secured 'crypts', where admin and user data are isolated
+- **In the unmounted state, this architecture protects your data (at rest) from virtual compute providers (cloud/VPS) that disallow custom images, the only secure way to enable full-disk encryption**
 - **This implementation of Phoenix is a minimum-viable replacement for shared workspaces like Microsoft 365 or Google Workspace, making it perfect for first-time (or even experienced) self-hosters**
 - Can be hosted on your own hardware, for maximum privacy, or in the cloud
 - Optimized and well-tested, from ongoing use in production as [Wild Blue](https://thewild.blue)'s primary shared workspace
@@ -30,6 +31,8 @@
 ## Features
 
 - 🪣 Isolation of admin and user data in 'crypts', encrypted folders that are easy to back up securely (and even move to other hosts)
+- 🕵️ General emphasis on runtime security and best practices for authentication, authorization, transport encryption, etc.
+- 🤏 General emphasis on resource efficiency in all dimensions (CPU/RAM/disk/net/etc.), for running in tiny places
 - 🔒 Simple interface with crypts unmounted:
   - ⤴️ *Mount crypts*
 - 🔓 Simple interface with crypts mounted:
@@ -39,7 +42,7 @@
   - 🔄️ *Update APT packages and reboot*
 - 🔎 AES-NI detection (lack of AES-NI being the most common cause of poor performance)
 - 🔀 Automatic internal port generation, unique to each instance and divided between platform ports (low port numbers) and crypt ports (high port numbers, for services operating on admin/user data)
-- 📨 Auto-configured SMTP client, with support for logging sensitive transfers to the admin crypt
+- 📨 Auto-configured SMTP client, with support for logging sensitive transfers in the admin crypt
 - 📘 Automatic configuration of JournalD, to support resource-constrained hosts
 - 🗃️ Automatic swap file creation/management, to support resource-constrained hosts
 - 📈 Auto-configured Prometheus metric exporters
@@ -57,26 +60,26 @@
 
 All apps are containers composed from community-maintained images of popular open source projects. **All apps have web interfaces, as seen above, in addition to their other features.**
 
-- 📇 LDAP, based on [LLDAP](https://github.com/lldap/lldap) [![](https://img.shields.io/github/stars/lldap/lldap.svg)](https://github.com/lldap/lldap/stargazers)
+- 📇 [LDAP](/crypt-admin/init-phoenix/config/ldap.compose.yaml.template), based on [LLDAP](https://github.com/lldap/lldap) [![](https://img.shields.io/github/stars/lldap/lldap.svg)](https://github.com/lldap/lldap/stargazers)
   - Lightweight user and group directory
 
-- 🤝 Auth, based on [Authelia](https://github.com/authelia/authelia) [![](https://img.shields.io/github/stars/authelia/authelia.svg)](https://github.com/authelia/authelia/stargazers)
+- 🤝 [Auth](/crypt-admin/init-phoenix/config/auth.compose.yaml.template), based on [Authelia](https://github.com/authelia/authelia) [![](https://img.shields.io/github/stars/authelia/authelia.svg)](https://github.com/authelia/authelia/stargazers)
   - Simple, performant, and compliant OIDC provider
 
-- 🔒 Secrets, based on [Vaultwarden](https://github.com/dani-garcia/vaultwarden) [![](https://img.shields.io/github/stars/dani-garcia/vaultwarden.svg)](https://github.com/dani-garcia/vaultwarden/stargazers)
+- 🔒 [Secrets](/crypt-admin/init-phoenix/config/secrets.compose.yaml.template), based on [Vaultwarden](https://github.com/dani-garcia/vaultwarden) [![](https://img.shields.io/github/stars/dani-garcia/vaultwarden.svg)](https://github.com/dani-garcia/vaultwarden/stargazers)
   - Lightweight and cryptographically sound secrets management
   - Compatible with Bitwarden clients
 
-- 📝 Docs, based on [HedgeDoc](https://github.com/hedgedoc/hedgedoc) [![](https://img.shields.io/github/stars/hedgedoc/hedgedoc.svg)](https://github.com/hedgedoc/hedgedoc/stargazers)
+- 📝 [Docs](/crypt-admin/init-phoenix/config/docs.compose.yaml.template), based on [HedgeDoc](https://github.com/hedgedoc/hedgedoc) [![](https://img.shields.io/github/stars/hedgedoc/hedgedoc.svg)](https://github.com/hedgedoc/hedgedoc/stargazers)
   - Simple and featureful Markdown document editor
   - Collaborative editing
   - [Automatic compression of image uploads](https://github.com/tiny-media/hedgedoc-image-compressor)
 
-- 🧮 Sheets, based on [Grist](https://github.com/gristlabs/grist-core) [![](https://img.shields.io/github/stars/gristlabs/grist-core.svg)](https://github.com/gristlabs/grist-core/stargazers)
+- 🧮 [Sheets](/crypt-admin/init-phoenix/config/sheets.compose.yaml.template), based on [Grist](https://github.com/gristlabs/grist-core) [![](https://img.shields.io/github/stars/gristlabs/grist-core.svg)](https://github.com/gristlabs/grist-core/stargazers)
   - Alternative to Google Sheets and Airtable
   - Sheet format is based on SQLite and can be easily downloaded/opened on any platform
 
-- 📅 DAV, based on [Nextcloud](https://github.com/nextcloud/server) [![](https://img.shields.io/github/stars/nextcloud/server.svg)](https://github.com/nextcloud/server/stargazers)
+- 📅 [DAV](/crypt-admin/init-phoenix/config/dav.compose.yaml.template), based on [Nextcloud](https://github.com/nextcloud/server) [![](https://img.shields.io/github/stars/nextcloud/server.svg)](https://github.com/nextcloud/server/stargazers)
   - Management of contacts, calendars, and tasks
   - Compatible with iOS and Android (the latter requires a third-party app)
 
