@@ -9,11 +9,11 @@ PHX_SHEETS_ENABLED=true
 PHX_DAV_ENABLED=true
 
 PHX_LDAP_DOMAIN=ldap.your.domain # TODO
-PHX_AUTH_DOMAIN=ldap.your.domain # TODO
-PHX_SECRETS_DOMAIN=ldap.your.domain # TODO
-PHX_DOCS_DOMAIN=ldap.your.domain # TODO
-PHX_SHEETS_DOMAIN=ldap.your.domain # TODO
-PHX_DAV_DOMAIN=ldap.your.domain # TODO
+PHX_AUTH_DOMAIN=auth.your.domain # TODO
+PHX_SECRETS_DOMAIN=secrets.your.domain # TODO
+PHX_DOCS_DOMAIN=docs.your.domain # TODO
+PHX_SHEETS_DOMAIN=sheets.your.domain # TODO
+PHX_DAV_DOMAIN=dav.your.domain # TODO
 
 PHX_LDAP_LDAP_NGINX_PORT=3890
 PHX_LDAP_LDAPS_NGINX_PORT=6360
