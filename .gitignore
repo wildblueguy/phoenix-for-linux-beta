@@ -1,6 +1,3 @@
-platform-admin/secure-sudo-dns/config/etc--netplan--PRIMARY.yaml
-platform-admin/secure-sudo-dns/config/etc--sudoers.d--99-overrides
-platform-admin/secure-sudo-dns/config/etc--systemd--resolved.conf
 platform-admin/init-phoenix/config/config.sh
 platform-admin/init-phoenix/config/config.aas.sh
 platform-admin/init-phoenix/state/state.sh
