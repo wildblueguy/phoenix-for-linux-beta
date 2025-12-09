@@ -10,6 +10,7 @@
 - Assume Bash + Ubuntu environment (for now)
 - Flags `-e` and `-a` are always set, except during early execution and explicit exceptions, e.g. `set +a; UNEXPORTED_VAR=value; set -a`
 - Idempotent/repeatable operations are preferred, otherwise completed operations must be remembered to prevent repetition
+- Existing configurations and state are backed up before modification, with suffix `.init-phoenix.aas.backup`
 - Crypts are restricted to a single owner, a limitation of `gocryptfs`/FUSE (other users can still access, under the `allow_other` mount option)
   - **Crypt owners**: `root`, admin user (`ubuntu`), `mysql`
   - **Crypts**: Root crypt, Docker volume crypt (owned by `root`), admin crypt, MySQL crypt
