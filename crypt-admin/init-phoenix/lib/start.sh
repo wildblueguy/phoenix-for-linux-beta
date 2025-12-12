@@ -15,6 +15,8 @@ if [[ $PHX_MANAGE_SWAP = true ]]; then
   sudo swapon /root/.phx.swapfile
 fi
 
+sudo systemctl restart prometheus-node-exporter.service # ...in case of early bind failure
+
 sudo systemctl restart nginx.service
 sudo systemctl restart prometheus-nginx-exporter.service
 
