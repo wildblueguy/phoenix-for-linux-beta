@@ -15,4 +15,6 @@ set -a
 sudo apt update
 sudo apt upgrade -y
 
+sudo crudini --set /usr/lib/systemd/system/prometheus-mysqld-exporter.service Service User ubuntu # Reverts on package upgrade (initial in crypt init)
+
 sudo reboot now
