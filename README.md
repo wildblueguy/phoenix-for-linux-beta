@@ -177,6 +177,11 @@ All apps are containers composed from community-maintained images of popular ope
 
 I designed and built this because I care about controlling my data and don't trust cloud providers. At a certain point, as a 'failed' startup owner, I could no longer afford my cloud bills or the risk (and corresponding maintenance burden) of keeping basic services on-prem. This was my solution, which I find too useful to keep to myself, but too immature (at the moment) to productize.
 
+> [!NOTE]
+> I hope the release of Phoenix is also interpreted (correctly) as a gift to to the free and open source community, from whom I have gained much over the years and whose labor this technology is built upon.
+>
+> 💙
+
 Mostly, though, I'm trying to re-establish some credibility after building a limited-release, proprietary product over several years. If it worked, please go [here](https://about.thewild.blue/jess).
 
 @wildblueguy
