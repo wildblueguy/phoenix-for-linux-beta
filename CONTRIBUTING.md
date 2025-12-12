@@ -37,6 +37,8 @@
 - Script state management could be better
 - A script is needed to downgrade/reconcile crypts configured with service features, for local use, e.g. in WSL (need self-signed certs?)
 - The OpenIPMI service is auto-installed with Prometheus Node Exporter, which will fail to start if the associated hardware is unavailable, resulting in a 'degraded' system (solve on Ubuntu with `apt remove openipmi`)
+- Docker metrics are currently misconfigured, based on a bad assumption (that the service could bind to an arbitrary interface)
+  - Remedy: Bind to `0.0.0.0` but configure a firewall to emulate interface binding
 - A containerized connector for LLDAP and Vaultwarden is available, but unimplemented
 - Privacy concern: Unknown if HedgeDoc removes metadata from uploaded images (it should)
 - Nextcloud install is not sufficiently automated, contains race condition
